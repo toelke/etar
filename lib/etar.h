@@ -44,6 +44,7 @@ typedef struct tar_ctx {
 	/** position of the write-pointer, number of valid bytes in workspace */
 	unsigned int pos;
 	void *cls;
+	char numempty;
 } tar_t;
 
 /**
@@ -87,7 +88,7 @@ int tar_init(tar_t *t, void *cls, char *workspace, unsigned int workspacesize);
  * @param data The new data
  * @param len The size of the data
  *
- * @return 0 on success, -1 if an error occurred
+ * @return 0 on success, -1 if an error occurred, -2 if the archive is completly parsed
  */
 int tar_new_data(tar_t *t, const char *data, unsigned int len);
 
