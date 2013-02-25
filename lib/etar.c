@@ -110,7 +110,11 @@ static void do_state(tar_t *t) {
 		consume(t, new_used);
 		if (0 == t->state_left) {
 			t->parsing_state = PADDING;
-			t->state_left = t->state_size = (512 - (t->state_size % 512) % 512);
+			if (t->state_size % 512) {
+				t->state_left = t->state_size = 512 - (t->state_size % 512);
+			} else {
+				t->state_left = t->state_size = 0;
+			}
 		}
 		break;
 	}
@@ -211,8 +215,10 @@ int tar_new_data(tar_t *t, const char *data, unsigned int len) {
 #ifdef DEBUG
 		printf("tar_new_data: after call: state_left = %d, state = %d\n", t->state_left, t->parsing_state);
 #endif
-		if (t->parsing_state == ABORT) return -1;
-		if (t->numempty >= 2) return -2;
+		if (t->parsing_state == ABORT)
+			return -1;
+		if (t->numempty >= 2)
+			return -2;
 	} while (len > 0);
 
 	while (t->state_left < t->pos)
