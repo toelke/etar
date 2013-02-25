@@ -2,7 +2,7 @@ source_files = $(shell find ../src ../lib -type f -iname '*.c' | sed 's/^\.\.\/s
 obj_files = $(subst .c,.o,$(source_files))
 
 LDFLAGS =
-CFLAGS = -g
+CFLAGS = -g -DDEBUG -Wall -Werror
 
 vpath %.c ../src/
 
